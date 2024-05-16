@@ -1,8 +1,8 @@
 package ma.enset.projetdinnovationglsid;
 
-import ma.enset.projetdinnovationglsid.entities.*;
+import ma.enset.projetdinnovationglsid.dtos.*;
 import ma.enset.projetdinnovationglsid.enums.Status;
-import ma.enset.projetdinnovationglsid.repositories.*;
+import ma.enset.projetdinnovationglsid.services.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,81 +18,56 @@ public class ProjetDInnovationGlsidApplication {
     public static void main(String[] args) {
         SpringApplication.run(ProjetDInnovationGlsidApplication.class, args);
     }
+
     @Bean
     CommandLineRunner commandLineRunner(
-            PatientRepository patientRepository,
-            RendezVousRepository rendezVousRepository,
-            MedecinRepository medecinRepository,
-            DossierMedicalRepository dossierMedicalRepository,
-            ConsultationRepository consultationRepository
+            PatientService patientService,
+            DossierMedicalService dossierMedicalService,
+            MedecinService medecinService,
+            RendezVousService rendezVousService,
+            ConsultationService consultationService
     ) {
         return args -> {
-            System.out.println("Testing...");
-
-            // Création des patients et de leurs dossiers médicaux
-            Stream.of("Brahim", "Mohammed", "abdelilah").forEach(name -> {
-                Patient patient = new Patient();
-                patient.setNom("Nom de " + name);
-                patient.setPrenom(name);
-                patient.setDateNaissance(new Date());
-                patient.setAdresse("Adresse de " + name);
-                patient.setCNI("CNI de " + name);
-                patientRepository.save(patient);
-
-                DossierMedical dossierMedical = new DossierMedical();
-                dossierMedical.setPatient(patient);
-                dossierMedical.setDescription("Description du dossier médical de " + name);
-                dossierMedicalRepository.save(dossierMedical);
+            // Création de patients
+            Stream.of("Brahim", "Mohammed", "Aicha").forEach(name -> {
+                PatientDto patientDto = new PatientDto();
+                patientDto.setNom("Nom de " + name);
+                patientDto.setPrenom(name);
+                patientDto.setDateNaissance(new Date());
+                patientDto.setAdresse("Adresse de " + name);
+                patientDto.setCNI("CNI de " + name);
+                patientService.createPatient(patientDto);
             });
 
-            // Affichage des patients et de leurs dossiers médicaux
-            List<Patient> patients = patientRepository.findAll();
-            for (Patient p : patients) {
-                System.out.println("Patient: " + p.getNom() + " " + p.getPrenom() + ", CNI: " + p.getCNI() + ", Adresse: " + p.getAdresse() + ", Dossier Médical: " + p.getDossierMedical().getDescription());
-            }
+            // Récupération de tous les patients
+            List<PatientDto> patients = patientService.getAllPatients();
+            patients.forEach(patient -> System.out.println("Patient: " + patient.getNom() + " " + patient.getPrenom() + ", CNI: " + patient.getCNI() + ", Adresse: " + patient.getAdresse()));
 
-            // Création des médecins
-            Stream.of("Loubna", "Hayat", "Hamza").forEach(name -> {
-                Medecin medecin = new Medecin();
-                medecin.setNom(name);
-                medecin.setSpecialite("Dentaire");
-                medecinRepository.save(medecin);
+            // Création de dossiers médicaux pour les patients
+            patients.forEach(patient -> {
+                DossierMedicalDto dossierMedicalDto = new DossierMedicalDto();
+                dossierMedicalDto.setPatient(patient);
+                dossierMedicalDto.setDescription("Description du dossier médical de " + patient.getNom());
+                dossierMedicalService.createDossierMedical(dossierMedicalDto);
             });
 
-            // Affichage des médecins
-            List<Medecin> medecins = medecinRepository.findAll();
-            for (Medecin m : medecins) {
-                System.out.println("Médecin: " + m.getNom() + ", Spécialité: " + m.getSpecialite());
-            }
+            // Récupération de tous les dossiers médicaux
+            List<DossierMedicalDto> dossiersMedical = dossierMedicalService.getAllDossiersMedical();
+            dossiersMedical.forEach(dossierMedical -> System.out.println("Dossier médical: " + dossierMedical.getDescription()));
 
-            // Création des rendez-vous
-            Stream.of(Status.CONFIRMER, Status.ANNULER, Status.EN_ATTENTE)
-                    .forEach(status -> {
-                        RendezVous rendezVous = new RendezVous();
-                        rendezVous.setDate(new Date());
-                        rendezVous.setStatus(status);
-                        rendezVous.setPatient(patients.get((int) (Math.random() * patients.size())));
-                        rendezVous.setMedecin(medecins.get((int) (Math.random() * medecins.size())));
-                        rendezVousRepository.save(rendezVous);
-                    });
+            // Création de médecins
+            Stream.of("Samir", "Abdelilah", "Hamza").forEach(name -> {
+                MedecinDto medecinDto = new MedecinDto();
+                medecinDto.setNom(name);
+                medecinDto.setSpecialite("Dentaire");
+                medecinService.createMedecin(medecinDto);
+            });
 
-            // Création des consultations po
-            List<RendezVous> rendezVousList = rendezVousRepository.findAll();
-            for (RendezVous r : rendezVousList) {
-                Consultation consultation = new Consultation();
-                consultation.setDate(new Date());
-                consultation.setDossierMedical(r.getPatient().getDossierMedical());
-                consultation.setMedecin(r.getMedecin());
-                consultation.setDiagnostic("Diagnostic de la consultation");
-                consultation.setTraitement("Traitement de la consultation");
-                consultationRepository.save(consultation);
-            }
+            // Récupération de tous les médecins
+            List<MedecinDto> medecins = medecinService.getAllMedecins();
+            medecins.forEach(medecin -> System.out.println("Médecin: " + medecin.getNom() + ", Spécialité: " + medecin.getSpecialite()));
 
-            // Affichage des consultations
-            List<Consultation> consultations = consultationRepository.findAll();
-            for (Consultation c : consultations) {
-                System.out.println("Consultation: " + c.getId() + ", Médecin: " + c.getMedecin().getNom() + ", Diagnostic: " + c.getDiagnostic() + ", Traitement: " + c.getTraitement());
-            }
-        };
+            };
     }
+
 }

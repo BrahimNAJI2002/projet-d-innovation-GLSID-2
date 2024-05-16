@@ -11,5 +11,5 @@ public class PatientDto {
     private String prenom;
     private Date dateNaissance;
     private String adresse;
-    private String cne;
+    private String CNI;
 }
