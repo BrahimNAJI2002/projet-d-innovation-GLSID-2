@@ -38,11 +38,32 @@ La couche Services permet de manipuler les données à travers des DTOs (Data Tr
 - **RendezVousService**: Opérations pour gérer les rendez-vous entre les patients et les médecins.
 - **ConsultationService**: Opérations pour gérer les consultations médicales.
 
+# Couche Web
+
+La couche Web de l'application est responsable de l'exposition des fonctionnalités de l'application via des API RESTful. Cette couche utilise les contrôleurs REST API pour gérer les requêtes HTTP et les réponses pour effectuer les opérations CRUD (Create, Read, Update, Delete) sur les ressources de l'application.
+
+## Contrôleurs REST API
+
+Les contrôleurs REST API ont été créés pour chaque entité de l'application afin de fournir des endpoints pour manipuler les données. Voici les principaux contrôleurs REST API de l'application :
+
+- `PatientRestAPI`: Gère les opérations CRUD sur les patients.
+- `MedecinRestAPI`: Gère les opérations CRUD sur les médecins.
+- `DossierMedicalRestAPI`: Gère les opérations CRUD sur les dossiers médicaux.
+- `ConsultationRestAPI`: Gère les opérations CRUD sur les consultations.
+- `RendezVousRestAPI`: Gère les opérations CRUD sur les rendez-vous.
+
+
 ### Test
 
-La classe `ProjetDInnovationGlsidApplication` contient une méthode `main` qui initialise quelques données de test pour les patients, les médecins, les rendez-vous et les consultations. Ces données de test sont utilisées pour vérifier le bon fonctionnement de l'application.
+Pour consulter la documentation API :
+http://localhost:8085/v3/api-docs
 
+
+![img_2.png](img_2.png)
 
 ![img.png](img.png)
 
 ![img_1.png](img_1.png)
+
+![img_3.png](img_3.png)
+
