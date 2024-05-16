@@ -46,4 +46,14 @@ public class MedecinRestAPI {
     public List<MedecinDto> searchMedecins(@RequestParam(name = "searchTerm",defaultValue = "") String searchTerm) {
         return medecinService.searchMedecins("%"+searchTerm+"%");
     }
+
+    @GetMapping("/medecins/{medecinId}/consultations")
+    public List<ConsultationDto> getConsultationsByMedecin(@PathVariable Long medecinId) throws MedecinNotFoundException {
+        return medecinService.getConsultationsByMedecin(medecinId);
+    }
+
+    @GetMapping("/medecins/{medecinId}/rendezvous")
+    public List<RendezVousDto> getRendezVousByMedecin(@PathVariable Long medecinId) throws MedecinNotFoundException {
+        return medecinService.getRendezVousByMedecin(medecinId);
+    }
 }

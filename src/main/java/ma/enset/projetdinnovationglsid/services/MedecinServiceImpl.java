@@ -2,11 +2,17 @@ package ma.enset.projetdinnovationglsid.services;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ma.enset.projetdinnovationglsid.dtos.ConsultationDto;
 import ma.enset.projetdinnovationglsid.dtos.MedecinDto;
+import ma.enset.projetdinnovationglsid.dtos.RendezVousDto;
+import ma.enset.projetdinnovationglsid.entities.Consultation;
 import ma.enset.projetdinnovationglsid.entities.Medecin;
+import ma.enset.projetdinnovationglsid.entities.RendezVous;
 import ma.enset.projetdinnovationglsid.exceptions.MedecinNotFoundException;
 import ma.enset.projetdinnovationglsid.mappers.Mapper;
+import ma.enset.projetdinnovationglsid.repositories.ConsultationRepository;
 import ma.enset.projetdinnovationglsid.repositories.MedecinRepository;
+import ma.enset.projetdinnovationglsid.repositories.RendezVousRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +25,8 @@ import java.util.stream.Collectors;
 @Transactional
 public class MedecinServiceImpl implements MedecinService {
     private final MedecinRepository medecinRepository;
+    private final ConsultationRepository consultationRepository;
+    private final RendezVousRepository rendezVousRepository;
     private final Mapper mapper;
 
     @Override
@@ -62,6 +70,24 @@ public class MedecinServiceImpl implements MedecinService {
     public List<MedecinDto> searchMedecins(String searchTerm) {
         List<Medecin> medecins = medecinRepository.searchMedecin(searchTerm);
         return medecins.stream()
+                .map(mapper::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ConsultationDto> getConsultationsByMedecin(Long medecinId) throws MedecinNotFoundException {
+        Medecin medecin = medecinRepository.findById(medecinId).orElseThrow(() -> new MedecinNotFoundException("Medecin not found"));
+        List<Consultation> consultations = consultationRepository.findConsultationsByMedecin(medecin);
+        return consultations.stream()
+                .map(mapper::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RendezVousDto> getRendezVousByMedecin(Long medecinId) throws MedecinNotFoundException {
+        Medecin medecin = medecinRepository.findById(medecinId).orElseThrow(() -> new MedecinNotFoundException("Medecin not found"));
+        List<RendezVous> rendezVous = rendezVousRepository.findRendezVousByMedecin(medecin);
+        return rendezVous.stream()
                 .map(mapper::convertToDto)
                 .collect(Collectors.toList());
     }

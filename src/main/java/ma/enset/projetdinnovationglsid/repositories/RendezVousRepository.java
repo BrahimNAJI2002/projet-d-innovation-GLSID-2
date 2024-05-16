@@ -1,6 +1,7 @@
 package ma.enset.projetdinnovationglsid.repositories;
 
 
+import ma.enset.projetdinnovationglsid.entities.Medecin;
 import ma.enset.projetdinnovationglsid.entities.Patient;
 import ma.enset.projetdinnovationglsid.entities.RendezVous;
 import org.springframework.data.domain.Page;
@@ -17,5 +18,7 @@ import java.util.List;
 public interface RendezVousRepository extends JpaRepository<RendezVous, Long> {
 
     List<RendezVous> findByDate(Date date);
+
+    List<RendezVous> findRendezVousByMedecin(Medecin medecin);
 }
 

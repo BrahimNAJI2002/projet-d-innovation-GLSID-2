@@ -48,6 +48,21 @@ public class PatientRestAPI {
         return patientService.searchPatients("%"+searchTerm+"%");
     }
 
+    @GetMapping("/patients/{patientId}/dossier-medical")
+    public DossierMedicalDto getDossierMedicalByPatient(@PathVariable Long patientId) throws PatientNotFoundException {
+        return patientService.getDossierMedicalByPatient(patientId);
+    }
+
+    @GetMapping("/patients/{patientId}/consultations")
+    public List<ConsultationDto> getConsultationsByPatient(@PathVariable Long patientId) throws PatientNotFoundException {
+        return patientService.getConsultationsByPatient(patientId);
+    }
+
+    @GetMapping("/patients/{patientId}/rendezvous")
+    public List<RendezVousDto> getRendezVousByPatient(@PathVariable Long patientId) throws PatientNotFoundException {
+        return patientService.getRendezVousByPatient(patientId);
+    }
+
 
 
 }

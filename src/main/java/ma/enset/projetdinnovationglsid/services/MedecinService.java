@@ -1,6 +1,8 @@
 package ma.enset.projetdinnovationglsid.services;
 
 import ma.enset.projetdinnovationglsid.dtos.MedecinDto;
+import ma.enset.projetdinnovationglsid.dtos.ConsultationDto;
+import ma.enset.projetdinnovationglsid.dtos.RendezVousDto;
 import ma.enset.projetdinnovationglsid.exceptions.MedecinNotFoundException;
 
 import java.util.List;
@@ -12,4 +14,6 @@ public interface MedecinService {
     void deleteMedecin(Long id);
     List<MedecinDto> getAllMedecins();
     List<MedecinDto> searchMedecins(String searchTerm);
+    List<ConsultationDto> getConsultationsByMedecin(Long medecinId) throws MedecinNotFoundException;
+    List<RendezVousDto> getRendezVousByMedecin(Long medecinId) throws MedecinNotFoundException;
 }
