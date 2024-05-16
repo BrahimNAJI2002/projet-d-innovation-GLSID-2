@@ -37,13 +37,14 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientDto updatePatient(Long id, PatientDto patientDto) throws PatientNotFoundException {
-        Patient existingPatient = patientRepository.findById(id)
-                .orElseThrow(() -> new PatientNotFoundException("Patient non trouvé avec l'ID : " + id));
-        // Update existing patient entity with data from DTO
-        // Then save the updated patient entity
-        Patient updatedPatient = patientRepository.save(existingPatient);
-        return mapper.convertToDto(updatedPatient);
+        log.info("Updating Patient with ID: {}", id);
+        Patient existingPatient = patientRepository.findById(id).orElseThrow(() -> new PatientNotFoundException("Patient not found"));
+        Patient updatedPatient = mapper.convertToEntity(patientDto);
+        updatedPatient.setId(id); // Ensure the ID remains the same
+        Patient savedPatient = patientRepository.save(updatedPatient);
+        return mapper.convertToDto(savedPatient);
     }
+
 
     @Override
     public void deletePatient(Long id) {

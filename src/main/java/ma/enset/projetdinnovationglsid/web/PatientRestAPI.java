@@ -42,8 +42,12 @@ public class PatientRestAPI {
         patientService.deletePatient(patientId);
     }
 
+
     @GetMapping("/patients/search")
-    public List<PatientDto> searchPatients(@RequestParam String searchTerm) {
-        return patientService.searchPatients(searchTerm);
+    public List<PatientDto> searchCustomers(@RequestParam(name = "searchTerm",defaultValue = "") String searchTerm){
+        return patientService.searchPatients("%"+searchTerm+"%");
     }
+
+
+
 }

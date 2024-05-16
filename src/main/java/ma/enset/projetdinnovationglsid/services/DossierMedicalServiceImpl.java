@@ -37,12 +37,12 @@ public class DossierMedicalServiceImpl implements DossierMedicalService {
 
     @Override
     public DossierMedicalDto updateDossierMedical(Long id, DossierMedicalDto dossierMedicalDto) throws DossierMedicalNotFoundException {
-        DossierMedical existingDossierMedical = dossierMedicalRepository.findById(id)
-                .orElseThrow(() -> new DossierMedicalNotFoundException("Dossier médical non trouvé avec l'ID : " + id));
-        // Update existing dossierMedical entity with data from DTO
-        // Then save the updated dossierMedical entity
-        DossierMedical updatedDossierMedical = dossierMedicalRepository.save(existingDossierMedical);
-        return mapper.convertToDto(updatedDossierMedical);
+        log.info("Updating DossierMedical with ID: {}", id);
+        DossierMedical existingDossierMedical = dossierMedicalRepository.findById(id).orElseThrow(() -> new DossierMedicalNotFoundException("DossierMedical not found"));
+        DossierMedical updatedDossierMedical = mapper.convertToEntity(dossierMedicalDto);
+        updatedDossierMedical.setId(id);
+        DossierMedical savedDossierMedical = dossierMedicalRepository.save(updatedDossierMedical);
+        return mapper.convertToDto(savedDossierMedical);
     }
 
     @Override

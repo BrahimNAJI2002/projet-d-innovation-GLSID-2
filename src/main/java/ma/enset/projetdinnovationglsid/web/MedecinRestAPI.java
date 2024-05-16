@@ -43,7 +43,7 @@ public class MedecinRestAPI {
     }
 
     @GetMapping("/medecins/search")
-    public List<MedecinDto> searchMedecins(@RequestParam String searchTerm) {
-        return medecinService.searchMedecins(searchTerm);
+    public List<MedecinDto> searchMedecins(@RequestParam(name = "searchTerm",defaultValue = "") String searchTerm) {
+        return medecinService.searchMedecins("%"+searchTerm+"%");
     }
 }

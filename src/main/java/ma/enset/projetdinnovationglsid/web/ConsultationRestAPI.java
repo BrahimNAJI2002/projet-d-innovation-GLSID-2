@@ -43,7 +43,7 @@ public class ConsultationRestAPI {
     }
 
     @GetMapping("/consultations/search")
-    public List<ConsultationDto> searchConsultations(@RequestParam String searchTerm) {
-        return consultationService.searchConsultations(searchTerm);
+    public List<ConsultationDto> searchConsultations(@RequestParam(name = "searchTerm",defaultValue = "") String searchTerm) {
+        return consultationService.searchConsultations("%"+searchTerm+"%");
     }
 }

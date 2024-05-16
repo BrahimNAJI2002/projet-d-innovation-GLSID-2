@@ -36,12 +36,14 @@ public class ConsultationServiceImpl implements ConsultationService {
 
     @Override
     public ConsultationDto updateConsultation(Long id, ConsultationDto consultationDto) throws ConsultationNotFoundException {
+        log.info("Updating Consultation with ID: {}", id);
         Consultation existingConsultation = consultationRepository.findById(id).orElseThrow(() -> new ConsultationNotFoundException("Consultation not found"));
-        // Update existing consultation entity with data from DTO
-        // Then save the updated consultation entity
-        Consultation updatedConsultation = consultationRepository.save(existingConsultation);
-        return mapper.convertToDto(updatedConsultation);
+        Consultation updatedConsultation = mapper.convertToEntity(consultationDto);
+        updatedConsultation.setId(id); // Ensure the ID remains the same
+        Consultation savedConsultation = consultationRepository.save(updatedConsultation);
+        return mapper.convertToDto(savedConsultation);
     }
+
 
     @Override
     public void deleteConsultation(Long id) {

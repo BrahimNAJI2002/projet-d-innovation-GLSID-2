@@ -37,12 +37,12 @@ public class MedecinServiceImpl implements MedecinService {
 
     @Override
     public MedecinDto updateMedecin(Long id, MedecinDto medecinDto) throws MedecinNotFoundException {
-        Medecin existingMedecin = medecinRepository.findById(id)
-                .orElseThrow(() -> new MedecinNotFoundException("Médecin non trouvé avec l'ID : " + id));
-        // Update existing medecin entity with data from DTO
-        // Then save the updated medecin entity
-        Medecin updatedMedecin = medecinRepository.save(existingMedecin);
-        return mapper.convertToDto(updatedMedecin);
+        log.info("Updating Medecin with ID: {}", id);
+        Medecin existingMedecin = medecinRepository.findById(id).orElseThrow(() -> new MedecinNotFoundException("Medecin not found"));
+        Medecin updatedMedecin = mapper.convertToEntity(medecinDto);
+        updatedMedecin.setId(id);
+        Medecin savedMedecin = medecinRepository.save(updatedMedecin);
+        return mapper.convertToDto(savedMedecin);
     }
 
     @Override

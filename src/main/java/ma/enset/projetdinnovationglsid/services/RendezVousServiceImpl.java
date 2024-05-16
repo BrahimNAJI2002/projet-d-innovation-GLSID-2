@@ -38,12 +38,12 @@ public class RendezVousServiceImpl implements RendezVousService {
 
     @Override
     public RendezVousDto updateRendezVous(Long id, RendezVousDto rendezVousDto) throws RendezVousNotFoundException {
-        RendezVous existingRendezVous = rendezVousRepository.findById(id)
-                .orElseThrow(() -> new RendezVousNotFoundException("Rendez-vous non trouvé avec l'ID : " + id));
-        // Update existing rendezVous entity with data from DTO
-        // Then save the updated rendezVous entity
-        RendezVous updatedRendezVous = rendezVousRepository.save(existingRendezVous);
-        return mapper.convertToDto(updatedRendezVous);
+        log.info("Updating RendezVous with ID: {}", id);
+        RendezVous existingRendezVous = rendezVousRepository.findById(id).orElseThrow(() -> new RendezVousNotFoundException("RendezVous not found"));
+        RendezVous updatedRendezVous = mapper.convertToEntity(rendezVousDto);
+        updatedRendezVous.setId(id); // Ensure the ID remains the same
+        RendezVous savedRendezVous = rendezVousRepository.save(updatedRendezVous);
+        return mapper.convertToDto(savedRendezVous);
     }
 
     @Override

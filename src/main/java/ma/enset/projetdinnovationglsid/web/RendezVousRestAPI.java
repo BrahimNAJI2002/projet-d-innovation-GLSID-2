@@ -44,7 +44,9 @@ public class RendezVousRestAPI {
     }
 
     @GetMapping("/rendezvous/search")
-    public List<RendezVousDto> searchRendezVous(@RequestParam Date date) {
+    public List<RendezVousDto> searchRendezVous(@RequestParam(name = "date",defaultValue = "") Date date) {
         return rendezVousService.searchRendezVous(date);
     }
+
+
 }

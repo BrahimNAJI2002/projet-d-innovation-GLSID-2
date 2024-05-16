@@ -43,7 +43,9 @@ public class DossierMedicalRestAPI {
     }
 
     @GetMapping("/dossiers-medicaux/search")
-    public List<DossierMedicalDto> searchDossiersMedical(@RequestParam String searchTerm) {
-        return dossierMedicalService.searchDossiersMedical(searchTerm);
+    public List<DossierMedicalDto> searchDossiersMedical(@RequestParam(name = "searchTerm",defaultValue = "") String searchTerm) {
+        return dossierMedicalService.searchDossiersMedical("%"+searchTerm+"%");
     }
+
+
 }
