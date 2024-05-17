@@ -45,7 +45,6 @@ public class RendezVousServiceImpl implements RendezVousService {
         RendezVous savedRendezVous = rendezVousRepository.save(updatedRendezVous);
         return mapper.convertToDto(savedRendezVous);
     }
-
     @Override
     public void deleteRendezVous(Long id) {
         rendezVousRepository.deleteById(id);

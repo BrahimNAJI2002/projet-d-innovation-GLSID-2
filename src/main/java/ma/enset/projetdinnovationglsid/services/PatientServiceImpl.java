@@ -70,10 +70,9 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public DossierMedicalDto getDossierMedicalByPatient(Long patientId) throws PatientNotFoundException {
-        Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException("Patient not found"));
-        if(patient.getDossierMedical() != null)
+        Patient patient = new Patient();
+        patient= patientRepository.findById(patientId).orElseThrow(() -> new PatientNotFoundException("Patient not found"));
         return mapper.convertToDto(patient.getDossierMedical());
-        else return new DossierMedicalDto() ;
     }
 
     @Override

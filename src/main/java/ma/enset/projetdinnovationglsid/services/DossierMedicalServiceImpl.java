@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.enset.projetdinnovationglsid.dtos.DossierMedicalDto;
 import ma.enset.projetdinnovationglsid.entities.DossierMedical;
+import ma.enset.projetdinnovationglsid.entities.Patient;
 import ma.enset.projetdinnovationglsid.exceptions.DossierMedicalNotFoundException;
 import ma.enset.projetdinnovationglsid.mappers.Mapper;
 import ma.enset.projetdinnovationglsid.repositories.DossierMedicalRepository;
@@ -24,6 +25,8 @@ public class DossierMedicalServiceImpl implements DossierMedicalService {
     @Override
     public DossierMedicalDto createDossierMedical(DossierMedicalDto dossierMedicalDto) {
         DossierMedical dossierMedical = mapper.convertToEntity(dossierMedicalDto);
+        Patient patient = mapper.convertToEntity(dossierMedicalDto.getPatient());
+        dossierMedical.setPatient(patient);
         DossierMedical savedDossierMedical = dossierMedicalRepository.save(dossierMedical);
         return mapper.convertToDto(savedDossierMedical);
     }

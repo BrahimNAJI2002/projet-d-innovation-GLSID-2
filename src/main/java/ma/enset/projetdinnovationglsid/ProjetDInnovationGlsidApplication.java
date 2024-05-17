@@ -67,7 +67,30 @@ public class ProjetDInnovationGlsidApplication {
             List<MedecinDto> medecins = medecinService.getAllMedecins();
             medecins.forEach(medecin -> System.out.println("Médecin: " + medecin.getNom() + ", Spécialité: " + medecin.getSpecialite()));
 
-            };
-    }
 
+            // Création de consultations pour les patients et les médecins
+            for (DossierMedicalDto dossierMedical : dossiersMedical) {
+                for (MedecinDto medecin : medecins) {
+                    ConsultationDto consultationDto = new ConsultationDto();
+                    consultationDto.setDossierMedical(dossierMedical);
+                    consultationDto.setMedecin(medecin);
+                    consultationDto.setDate(new Date());
+                    consultationDto.setDiagnostic("Description de la consultation pour " + dossierMedical.getPatient().getNom());
+                    consultationDto.setOrdonnance("fichier"+dossierMedical.getPatient().getNom()+new Date()+".pdf");
+                    consultationService.createConsultation(consultationDto);
+                }
+            }
+
+            for (DossierMedicalDto dossierMedical : dossiersMedical) {
+                for (MedecinDto medecin : medecins) {
+                    RendezVousDto rendezVousDto = new RendezVousDto();
+                    rendezVousDto.setPatient(dossierMedical.getPatient());
+                    rendezVousDto.setMedecin(medecin);
+                    rendezVousDto.setDate(new Date());
+                    rendezVousDto.setStatus(Status.EN_ATTENTE);
+                    rendezVousService.createRendezVous(rendezVousDto);
+                }
+            }
+        };
+    }
 }
