@@ -16,4 +16,7 @@ public interface MedecinService {
     List<MedecinDto> searchMedecins(String searchTerm);
     List<ConsultationDto> getConsultationsByMedecin(Long medecinId) throws MedecinNotFoundException;
     List<RendezVousDto> getRendezVousByMedecin(Long medecinId) throws MedecinNotFoundException;
+
+
+    List<RendezVousDto> searchRendezVousByMedecin(Long medecinId, String s);
 }

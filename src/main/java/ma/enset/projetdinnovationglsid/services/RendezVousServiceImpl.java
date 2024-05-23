@@ -3,9 +3,11 @@ package ma.enset.projetdinnovationglsid.services;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.enset.projetdinnovationglsid.dtos.RendezVousDto;
+import ma.enset.projetdinnovationglsid.entities.Medecin;
 import ma.enset.projetdinnovationglsid.entities.RendezVous;
 import ma.enset.projetdinnovationglsid.exceptions.RendezVousNotFoundException;
 import ma.enset.projetdinnovationglsid.mappers.Mapper;
+import ma.enset.projetdinnovationglsid.repositories.MedecinRepository;
 import ma.enset.projetdinnovationglsid.repositories.RendezVousRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class RendezVousServiceImpl implements RendezVousService {
     private final RendezVousRepository rendezVousRepository;
+    private MedecinRepository medecinRepository;
     private final Mapper mapper;
 
     @Override
@@ -64,5 +67,17 @@ public class RendezVousServiceImpl implements RendezVousService {
         return rendezVousList.stream()
                 .map(mapper::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RendezVousDto> getAllRendezVousByMedecin(Long medecinId) {
+        Medecin medecin = medecinRepository.findById(medecinId).orElse(null);
+        if(medecin != null){
+            List<RendezVous> rendezVousList = rendezVousRepository.findRendezVousByMedecin(medecin);
+            return rendezVousList.stream()
+                    .map(mapper::convertToDto)
+                    .collect(Collectors.toList());
+        }
+        return null;
     }
 }

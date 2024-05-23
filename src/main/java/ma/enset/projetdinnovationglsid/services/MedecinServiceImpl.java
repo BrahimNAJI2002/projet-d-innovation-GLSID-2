@@ -91,4 +91,13 @@ public class MedecinServiceImpl implements MedecinService {
                 .map(mapper::convertToDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<RendezVousDto> searchRendezVousByMedecin(Long medecinId, String s) {
+        Medecin medecin = medecinRepository.findById(medecinId).orElse(null);
+        List<RendezVous> rendezVous = rendezVousRepository.searchRendezVousByMedecin(medecin, s);
+        return rendezVous.stream()
+                .map(mapper::convertToDto)
+                .collect(Collectors.toList());
+    }
 }

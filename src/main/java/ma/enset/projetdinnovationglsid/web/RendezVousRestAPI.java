@@ -23,6 +23,11 @@ public class RendezVousRestAPI {
         return rendezVousService.getRendezVousById(rendezVousId);
     }
 
+    @GetMapping("/rendezvous/{medecinId}")
+    public List<RendezVousDto> listRendezVousByMedecin(@PathVariable Long medecinId){
+        return rendezVousService.getAllRendezVousByMedecin(medecinId);
+    }
+
     @GetMapping("/rendezvous")
     public List<RendezVousDto> listRendezVous(){
         return rendezVousService.getAllRendezVous();

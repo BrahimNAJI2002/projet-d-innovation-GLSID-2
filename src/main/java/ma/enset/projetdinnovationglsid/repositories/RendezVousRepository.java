@@ -20,5 +20,11 @@ public interface RendezVousRepository extends JpaRepository<RendezVous, Long> {
     List<RendezVous> findByDate(Date date);
 
     List<RendezVous> findRendezVousByMedecin(Medecin medecin);
+
+    @Query("SELECT r FROM RendezVous r WHERE r.medecin = :medecin AND (r.patient.nom   LIKE %:kw%)")
+    List<RendezVous> searchRendezVousByMedecin(@Param("medecin") Medecin medecin, @Param("kw") String keyword);
+
+    @Query("select m from Medecin m where m.nom like :kw")
+    List<Medecin> searchMedecin(@Param("kw") String keyword);
 }
 

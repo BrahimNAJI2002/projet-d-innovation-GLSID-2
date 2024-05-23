@@ -13,4 +13,6 @@ public interface RendezVousService {
     void deleteRendezVous(Long id);
     List<RendezVousDto> getAllRendezVous();
     List<RendezVousDto> searchRendezVous(Date date);
+
+    List<RendezVousDto> getAllRendezVousByMedecin(Long medecinId);
 }
