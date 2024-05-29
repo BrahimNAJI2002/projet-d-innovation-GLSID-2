@@ -23,8 +23,8 @@ public class Consultation {
     @ManyToOne
     private DossierMedical dossierMedical;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
     private String diagnostic;
